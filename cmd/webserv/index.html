@@ -1,0 +1,29 @@
+<style type="text/css">
+    .error {
+        color: red;
+    }
+</style>
+
+<head>
+
+</head>
+
+<body>
+    <h1>Eunos Roadster</h1>
+    <form method="POST">
+        <label>VIN: </label>
+        <input type="text" name="vin">
+        <input type="submit" value="Submit">
+    </form>
+    <div>
+        {{ with .Error }}
+        <div class="error">{{ . }}</div>
+        {{ end }}
+        {{ with .Vin }}
+        <h2>{{ . }}</h2>
+        <p>Model: {{ .Model }}</p>
+        <p>Engine: 1.{{ .Engine }}i</p>
+        <p>Manufactured: {{ .Date }}</p>
+        {{ end }}
+    </div>
+</body>

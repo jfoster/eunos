@@ -22,6 +22,10 @@ func (d *YYYYMM) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+func (d YYYYMM) MarshalYAML() (interface{}, error) {
+	return d.String(), nil
+}
+
 func (d *YYYYMM) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	var str string
 
