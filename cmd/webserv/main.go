@@ -7,7 +7,6 @@ import (
 
 	"github.com/caarlos0/env/v6"
 	"github.com/jfoster/eunos/roadster"
-	_ "github.com/jfoster/eunos/roadster"
 )
 
 type Data struct {
@@ -18,7 +17,7 @@ type Data struct {
 func main() {
 	var cfg struct {
 		Port  string `env:"PORT" envDefault:"8080"`
-		Table string `env:"TABLE" envDefault:"vins.yml"`
+		Table string `env:"TABLE" envDefault:"data.yml"`
 	}
 
 	if err := env.Parse(&cfg); err != nil {
@@ -30,10 +29,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "roadster", http.StatusSeeOther)
+	})
+
 	http.HandleFunc("/roadster", func(w http.ResponseWriter, r *http.Request) {
-		var data = Data{
-			Error: nil,
-		}
+		var data Data
 
 		if v := r.FormValue("vin"); v != "" {
 			vin, err := roadster.ParseVIN(v, cfg.Table)
